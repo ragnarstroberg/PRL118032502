@@ -1,0 +1,69 @@
+This repository contains the interaction files used in
+"Nucleus-Dependent Valence-Space Approach to Nuclear Structure" [1].
+
+
+===============================================================
+======================== File Naming ==========================
+===============================================================
+
+The interaction files are named as
+{valence space}_{reference}_{solution method}_hw{frequency}_e{emax}_E{E3max}_A{mass}_{starting interaction}.int
+
+For example,
+
+fp-shell_Ca48_magnus_hw24_e12_E14_A48_srg0800.int
+
+* This is an interaction for the fp-shell valence space
+* A Ca48 reference is used for normal ordering.
+* The IM-SRG decoupling is performed with the magnus formulation.
+* The original single-particle basis is a harmonic oscillator with frequency 24 MeV, in emax=12 i.e. 13 major oscillator shells.
+* There is also a cut on three-body matrix elements such that e1+e2+e3 <= E3max, which is 14 in this case.
+* The mass A=48 was used in constructing the relative kinetic energy operator.
+* The input chiral interaction was free-space SRG evolved to alpha_SRG=0.0800 ~ 1.88 fm^-1.
+
+If you're unsure what these techincal details mean, please consult reference [1], and references therein.
+
+===============================================================
+======================== File Format ==========================
+===============================================================
+
+The files are in the format used by NuShellX@MSU [2].
+The *.int files contain the interaction.
+All lines beginning with ! are comment lines.
+The first non-comment line is
+{ignored integer} {spe for orbit 1} {spe for orbit 2} ... {spe for orbit N} {A_core} {Z_core} {A dependent scaling exponent}
+
+where N is the number of single-particle orbits.
+All lines thereafter are of the form
+
+a   b   c   d    J   T'     <abJT' | V | c d JT'>
+
+where a,b,c,d are integer indices labeling the valence orbits, J is the total angular momentum,
+and T' is an isospin-like parameter used by NuShellX, and V is the two-body interaction.
+
+
+
+Note that the proton-neutron two-body matrix elements (TBME) are un-normalized,
+while the proton-proton and neutron-neutron TBME are normalized.
+To obtain the normalized TBME, take
+
+<aaJ| V |ccJ>_npn    =           <aaJ| V |ccJ>_upn
+<abJ| V |ccJ>_npn    = 1/sqrt(2) <abJ| V |ccJ>_upn
+<aaJ| V |cdJ>_npn    = 1/sqrt(2) <aaJ| V |cdJ>_upn
+<abJ| V |cdJ>_npn    = 1/2       <abJ| V |cdJ>_upn
+
+
+
+
+The *.sp files are used by NuShellX to define the single-particle orbits.
+
+
+
+===============================================================
+===================== References ==============================
+===============================================================
+
+-------------------------------------------------------------------------------------------------
+[1] S.R. Stroberg, A. Calci, H. Hergert, J.D. Holt, S.K. Bogner, R. Roth, and A. Schwenk,  PRL 118, 302502 (2017)
+  arxiv 1607.03229
+[2] B. A. Brown and W. D. M. Rae, Nucl. Data Sheets 120, 115 (2014).
